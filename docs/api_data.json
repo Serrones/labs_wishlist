@@ -1,0 +1,594 @@
+[
+  {
+    "type": "get",
+    "url": "/auth",
+    "title": "Return Token",
+    "name": "authentication",
+    "group": "User",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "token",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "token.exp",
+            "description": "<p>Token expiration Date</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "token.message",
+            "description": "<p>Token message</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "token.token",
+            "description": "<p>Token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Token",
+          "content": "HTTP/1.1 200 OK\n{\n    \"exp\": \"Sat, 26 Dec 2020 03:52:42 GMT\",\n    \"message\": \"Validated sucessfully\",\n    \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InNlcnJvbmVzIiwiZXhwIjoxNjA4OTU0NzYyfQ.qhuNQ6ZCeNG6zSdF0DJpxTBUywbJI4UH4URZqXg7keM\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "Request",
+        "content": "curl --location --request GET 'http://localhost:5000/api/auth' \\\n    --header 'Authorization: Basic bGluZGE6MTIzNDU2' \\\n    --data-raw ''",
+        "type": "json"
+      }
+    ],
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>User not found || login required</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "app/api/users.py",
+    "groupTitle": "User"
+  },
+  {
+    "type": "post",
+    "url": "/users",
+    "title": "Create User",
+    "name": "create_user",
+    "group": "User",
+    "parameter": {
+      "fields": {
+        "Request body": [
+          {
+            "group": "Request body",
+            "type": "String",
+            "optional": false,
+            "field": "username",
+            "description": "<p>Username</p>"
+          },
+          {
+            "group": "Request body",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>Email</p>"
+          },
+          {
+            "group": "Request body",
+            "type": "String",
+            "optional": false,
+            "field": "password",
+            "description": "<p>Password</p>"
+          },
+          {
+            "group": "Request body",
+            "type": "Booelan",
+            "optional": false,
+            "field": "is_admin",
+            "description": "<p>Admin Permission</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Request",
+        "content": "curl --location --request POST 'http://localhost:5000/api/users' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    \"username\": \"dona\",\n    \"email\": \"dona@email.com\",\n    \"password\": \"123456\",\n    \"is_admin\": false\n}'",
+        "type": "json"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "oret",
+            "description": "<p>User created HTTP/1.1 201 Created</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "User",
+          "content": "HTTP/1.1 201 OK\n{\n    \"data\": {\n        \"email\": \"dona@email.com\",\n        \"id\": 3,\n        \"is_admin\": false,\n        \"products\": [],\n        \"username\": \"dona\"\n    },\n    \"message\": \"User created\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "400",
+            "description": "<p>Missing Field</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "403",
+            "description": "<p>User already exists</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "app/api/users.py",
+    "groupTitle": "User"
+  },
+  {
+    "type": "delete",
+    "url": "/users/:id_user",
+    "title": "Delete User",
+    "name": "delete_user",
+    "group": "User",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access",
+            "description": "<p>Authorization Token</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id_user",
+            "description": "<p>User ID</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Request",
+        "content": "curl --location --request DELETE 'http://localhost:5000/api/users/2' \\\n    --header 'x-access-tokens: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImJlbGEiLCJleHAiOjE2MDg5NDcyMzB9.7NizIQC5MohaZZ2kt1PtvWBAa4wQMF8L6MuLk7jrv94'",
+        "type": "json"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "User",
+            "description": "<p>Deleted HTTP/1.1 202</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "User deleted",
+          "content": "{\n    \"message\": \"successfully deleted\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "404",
+            "description": "<p>User not found</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>Token missing || missing admin permission</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "app/api/users.py",
+    "groupTitle": "User"
+  },
+  {
+    "type": "get",
+    "url": "/users/:id_user",
+    "title": "Get User",
+    "name": "get_user",
+    "group": "User",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access",
+            "description": "<p>Authorization Token</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id_user",
+            "description": "<p>User ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "user",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "user.data.email",
+            "description": "<p>User Email</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "user.data.id",
+            "description": "<p>User id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "user.data.username",
+            "description": "<p>User username</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Booelan",
+            "optional": false,
+            "field": "user.data.is_admin",
+            "description": "<p>User admin permission</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "List",
+            "optional": false,
+            "field": "user.data.products",
+            "description": "<p>User products list</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "user.message",
+            "description": "<p>Success Message</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "oret",
+            "description": "<p>User fetched HTTP/1.1 200 Ok</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "User",
+          "content": "HTTP/1.1 200 OK\n{\n    \"data\": {\n        \"email\": \"bela@email.com\",\n        \"id\": 1,\n        \"is_admin\": true,\n        \"products\": [],\n        \"username\": \"bela\"\n    },\n    \"message\": \"successfully fetched\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "Request",
+        "content": "HTTP/1.1 200 OK\ncurl --location --request GET 'http://localhost:5000/api/users/1' \\\n    --header 'x-access-tokens: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImJlbGEiLCJleHAiOjE2MDg5NDcyMzB9.7NizIQC5MohaZZ2kt1PtvWBAa4wQMF8L6MuLk7jrv94'",
+        "type": "json"
+      }
+    ],
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>User not found || token missing</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "app/api/users.py",
+    "groupTitle": "User"
+  },
+  {
+    "type": "get",
+    "url": "/users",
+    "title": "Get Users",
+    "name": "get_users",
+    "group": "User",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access",
+            "description": "<p>Authorization Token</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "list_users",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list_users.users.data.email",
+            "description": "<p>User Email</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list_users.users.data.id",
+            "description": "<p>User id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list_users.users.data.username",
+            "description": "<p>User username</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Booelan",
+            "optional": false,
+            "field": "list_users.users.data.is_admin",
+            "description": "<p>User admin permission</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "List",
+            "optional": false,
+            "field": "list_users.users.data.products",
+            "description": "<p>User products list</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list_users.message",
+            "description": "<p>Success Message</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "oret",
+            "description": "<p>Users fetched HTTP/1.1 200 Ok</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Users",
+          "content": "HTTP/1.1 200 OK\n{\n    \"message\": \"success\",\n    \"users\": [\n        {\n            \"email\": \"bela@email.com\",\n            \"id\": 1,\n            \"is_admin\": true,\n            \"products\": [],\n            \"username\": \"bela\"\n        },\n        {\n            \"email\": \"serrones@mail.com\",\n            \"id\": 2,\n            \"is_admin\": true,\n            \"products\": [\n                {\n                    \"brand\": \"bébé confort\",\n                    \"id\": 1,\n                    \"image\": \"http://challenge-api.luizalabs.com/images/1bf0f365-fbdd-4e21-9786-da459d78dd1f.jpg\",\n                    \"price\": 1699.0,\n                    \"product_id\": \"1bf0f365-fbdd-4e21-9786-da459d78dd1f\",\n                    \"title\": \"Cadeira para Auto Iseos Bébé Confort Earth Brown\"\n                }\n            ],\n            \"username\": \"serrones\"\n        }\n    ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "Request",
+        "content": "HTTP/1.1 200 OK\ncurl --location --request GET 'http://localhost:5000/api/users' \\\n    --header 'x-access-tokens: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImJlbGEiLCJleHAiOjE2MDg5NDcyMzB9.7NizIQC5MohaZZ2kt1PtvWBAa4wQMF8L6MuLk7jrv94'",
+        "type": "json"
+      }
+    ],
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>Token missing</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "app/api/users.py",
+    "groupTitle": "User"
+  },
+  {
+    "type": "put",
+    "url": "/user/:id_user",
+    "title": "Update User",
+    "name": "update_user",
+    "group": "User",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access",
+            "description": "<p>Authorization Token</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id_user",
+            "description": "<p>User ID</p>"
+          }
+        ],
+        "Request body": [
+          {
+            "group": "Request body",
+            "type": "String",
+            "optional": true,
+            "field": "username",
+            "description": "<p>Username</p>"
+          },
+          {
+            "group": "Request body",
+            "type": "String",
+            "optional": true,
+            "field": "email",
+            "description": "<p>Email</p>"
+          },
+          {
+            "group": "Request body",
+            "type": "String",
+            "optional": true,
+            "field": "password",
+            "description": "<p>Password</p>"
+          },
+          {
+            "group": "Request body",
+            "type": "Booelan",
+            "optional": true,
+            "field": "is_admin",
+            "description": "<p>Admin Permission</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Request",
+        "content": "curl --location --request PUT 'http://localhost:5000/api/users/2' \\\n--header 'x-access-tokens: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImJlbGEiLCJleHAiOjE2MDg5NDcyMzB9.7NizIQC5MohaZZ2kt1PtvWBAa4wQMF8L6MuLk7jrv94' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    \"username\": \"serrones\",\n    \"email\": \"serrones@mail.com\",\n    \"password\": \"123456\",\n    \"is_admin\": false\n}'",
+        "type": "json"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "oret",
+            "description": "<p>User updated HTTP/1.1 200 Ok</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "User",
+          "content": "HTTP/1.1 200 OK\n{\n    \"data\": {\n        \"email\": \"serrones@mail.com\",\n        \"id\": 2,\n        \"is_admin\": false,\n        \"products\": [],\n        \"username\": \"serrones\"\n    },\n    \"message\": \"successfully updated\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "400",
+            "description": "<p>Invalid Field</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>Token missing || missing admin permission</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "404",
+            "description": "<p>User not found</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "app/api/users.py",
+    "groupTitle": "User"
+  }
+]

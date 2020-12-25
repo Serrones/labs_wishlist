@@ -1,0 +1,10 @@
+{
+    "name": "Labs WishList",
+    "version": "0.1.0",
+    "description": "Labs WishList documentation",
+    "title": "Wishlist Docs",
+    "order": [
+        "User",
+            "authenticate"
+    ]
+}

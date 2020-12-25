@@ -16,7 +16,7 @@ def auth():
     if not auth or not auth.username or not auth.password:
         return jsonify(
             {
-                'message': 'coud not verify',
+                'message': 'could not verify',
                 'WWW-Authentication': 'Basic-auth="login required"'
             }
         ), HTTPStatus.UNAUTHORIZED

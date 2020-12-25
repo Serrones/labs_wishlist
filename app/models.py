@@ -68,4 +68,5 @@ class User(db.Model):  # type: ignore
 
     def from_dict(self, data):
         for field in ['username', 'email', 'is_admin']:
-            setattr(self, field, data[field])
+            if field in data:
+                setattr(self, field, data[field])
