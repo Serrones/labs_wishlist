@@ -10,6 +10,7 @@ from config import Config
 
 SECRET_KEY = Config.SECRET_KEY
 
+
 def auth():
     auth = request.authorization
     if not auth or not auth.username or not auth.password:

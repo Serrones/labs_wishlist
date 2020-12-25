@@ -5,24 +5,22 @@ from flask import jsonify, request
 
 from app import db
 from app.api import bp
-from app.models import User, Product
+from app.authentication import auth, token_required
+from app.models import Product, User
 from app.products.client import get_product_by_id
 
-from app.authentication import auth, token_required
 
-@bp.route('/auth', methods=['POST'])
+@bp.route('/auth', methods=['GET'])
 def authenticate():
     return auth()
 
 
 @bp.route('/users', methods=['POST'])
 def create_user():
-    user = User(
-        username=request.json['username'],
-        email=request.json['email'],
-        is_admin=request.json['is_admin']
-    )
-    user.set_password(request.json['password'])
+    data = data = request.get_json()
+    user = User()
+    user.from_dict(data)
+    user.set_password(data['password'])
 
     try:
         db.session.add(user)
@@ -37,6 +35,7 @@ def create_user():
             }
         ), HTTPStatus.CREATED
     except Exception:
+        print(exc)
         return jsonify(
             {
                 'message': 'Unable to create user'
@@ -52,10 +51,7 @@ def update_user(current_user, id):
             {'message': 'you dont have permission'}
         ), HTTPStatus.UNAUTHORIZED
 
-    username = request.json['username']
-    email = request.json['email']
-    password = request.json['password']
-    is_admin = request.json['is_admin']
+    data = data = request.get_json()
 
     user = User.query.get(id)
 
@@ -63,9 +59,7 @@ def update_user(current_user, id):
         return jsonify({'message': 'user doesnt exists'}), HTTPStatus.NOT_FOUND
 
     try:
-        user.username = username
-        user.email = email
-        user.is_admin = is_admin
+        user.from_dict(data)
         user.set_password(password)
         db.session.commit()
 
@@ -141,22 +135,22 @@ def delete_user(current_user, id):
 @token_required
 def get_product(current_user, product_id):
     try:
-        exists_product = Product.query.filter(product_id==product_id).first()
+        exists_product = Product.query.filter(product_id == product_id).first()
 
         if not exists_product:
             product = get_product_by_id(product_id)
 
             if product:
-                p = Product(
-                    product_id=product_id,
-                    price=product['price'],
-                    image=product['image'],
-                    brand=product['brand'],
-                    title=product['title']
-                )
+                p = Product()
+                p.from_dict(product)
+                p.product_id=product_id
                 current_user.products.append(p)
                 db.session.commit()
-                return jsonify({'message': 'product added in list'}), HTTPStatus.OK
+                return jsonify(
+                    {
+                        'message': 'product added in list'
+                    }
+                ), HTTPStatus.OK
 
         if exists_product in current_user.products:
             return jsonify({'message': 'product added in list'}), HTTPStatus.OK
@@ -165,7 +159,11 @@ def get_product(current_user, product_id):
         db.session.commit()
         return jsonify({'message': 'product added in list'}), HTTPStatus.OK
     except Exception:
-        return jsonify({'message': 'An error as ocurred'}), HTTPStatus.INTERNAL_SERVER_ERROR
+        return jsonify(
+            {
+                'message': 'An error as ocurred'
+            }
+        ), HTTPStatus.INTERNAL_SERVER_ERROR
 
 
 @bp.route('/users/list/<product_id>', methods=['DELETE'])
@@ -174,13 +172,25 @@ def remove_product(current_user, product_id):
     try:
         product = Product.query.filter(
             Product.user.has(id=current_user.id),
-            product_id==product_id).first()
+            product_id == product_id).first()
         if product:
             current_user.products.remove(product)
             db.session.commit()
-            return jsonify({'message': 'product removed from list'}), HTTPStatus.OK
+            return jsonify(
+                {
+                    'message': 'product removed from list'
+                }
+            ), HTTPStatus.OK
 
-        return jsonify({'message': 'product not found in list'}), HTTPStatus.NOT_FOUND
+        return jsonify(
+            {
+                'message': 'product not found in list'
+            }
+        ), HTTPStatus.NOT_FOUND
 
     except Exception:
-        return jsonify({'message': 'An error as ocurred'}), HTTPStatus.INTERNAL_SERVER_ERROR
+        return jsonify(
+            {
+                'message': 'An error as ocurred'
+            }
+        ), HTTPStatus.INTERNAL_SERVER_ERROR

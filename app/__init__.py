@@ -1,8 +1,8 @@
 from flask import Flask
-from config import Config
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
+from flask_migrate import Migrate  # type: ignore
+from flask_sqlalchemy import SQLAlchemy  # type: ignore
 
+from config import Config
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -14,7 +14,7 @@ def create_app(config_class=Config):
     db.init_app(app)
     migrate.init_app(app, db)
 
-    from app.api import bp as api_bp
+    from app.api import bp as api_bp  # noqa
     app.register_blueprint(api_bp, url_prefix='/api')
 
     return app

@@ -3,8 +3,8 @@ from unittest.mock import Mock
 
 import pytest
 
-from src.products.client import get_product_by_id
-from src.products.exceptions import ProductHttpException
+from app.products.client import get_product_by_id
+from app.products.exceptions import ProductHttpException
 
 
 class TestGetProductById:
@@ -28,7 +28,7 @@ class TestGetProductById:
         valid_product
     ):
         with mock.patch(
-            'src.products.client.requests.get'
+            'app.products.client.requests.get'
         ) as mock_get:
 
             mock_get.return_value = Mock(ok=True)

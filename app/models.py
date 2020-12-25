@@ -4,7 +4,8 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from app import db
 
-class Product(db.Model):
+
+class Product(db.Model):  # type: ignore
     __tablename__ = 'product'
     id = db.Column(db.Integer, primary_key=True)
     product_id = db.Column(db.String(36), index=True)
@@ -28,8 +29,12 @@ class Product(db.Model):
             'title': self.title
         }
 
+    def from_dict(self, data):
+        for field in ['price', 'image', 'brand', 'title']:
+            setattr(self, field, data[field])
 
-class User(db.Model):
+
+class User(db.Model):  # type: ignore
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
@@ -52,9 +57,6 @@ class User(db.Model):
     def check_password(self, password: Any) -> bool:
         return check_password_hash(self.password_hash, password)
 
-    # def has_product(self, product_id):
-    #     return self.products.filter()
-
     def as_dict(self):
         return {
             'id': self.id,
@@ -63,3 +65,7 @@ class User(db.Model):
             'is_admin': self.is_admin,
             'products': [product.as_dict() for product in self.products]
         }
+
+    def from_dict(self, data):
+        for field in ['username', 'email', 'is_admin']:
+            setattr(self, field, data[field])
