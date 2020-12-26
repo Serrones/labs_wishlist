@@ -1,21 +1,8 @@
-import logging
-from http import HTTPStatus
-
-from flask import jsonify, request
-
-from app import db
 from app.api import bp
 from app.authentication import auth, token_required
-from app.models import Product, User
-from app.products.client import get_product_by_id
+from app.views import (create_user, delete_user, get_product, get_user,
+                       get_users, remove_product, update_user)
 
-from app.views import (
-    create_user,
-    update_user,
-    get_user,
-    get_users,
-    delete_user
-)
 
 @bp.route('/auth', methods=['GET'])
 def authenticate():
@@ -23,7 +10,7 @@ def authenticate():
     @api {get} /auth
     Return Token
     @apiName authentication
-    @apiGroup User
+    @apiGroup Auth
 
     @apiSuccess {Object} token 
     @apiSuccess {Date} token.exp Token expiration Date
@@ -43,7 +30,7 @@ def authenticate():
             "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InNlcnJvbmVzIiwiZXhwIjoxNjA4OTU0NzYyfQ.qhuNQ6ZCeNG6zSdF0DJpxTBUywbJI4UH4URZqXg7keM"
         }
     @apiError 401 User not found || login required
-    """
+    """  # noqa
     return auth()
 
 
@@ -87,7 +74,7 @@ def post_user():
         }
     @apiError 400 Missing Field
     @apiError 403 User already exists
-    """
+    """  # noqa
     return create_user()
 
 
@@ -138,7 +125,7 @@ def put_user(current_user, id):
     @apiError 400 Invalid Field
     @apiError 401 Token missing || missing admin permission
     @apiError 404 User not found
-    """
+    """  # noqa
     return update_user(current_user, id)
 
 
@@ -185,7 +172,7 @@ def fetch_user(current_user, id):
             "message": "successfully fetched"
         }
     @apiError 401 User not found || token missing
-    """
+    """  # noqa
     return get_user(id)
 
 
@@ -248,7 +235,7 @@ def fetch_users(current_user):
             ]
         }
     @apiError 401 Token missing
-    """
+    """  # noqa
     return get_users()
 
 
@@ -279,39 +266,41 @@ def del_user(current_user, id):
 
     @apiError 404 User not found
     @apiError 401 Token missing || missing admin permission
-    """
+    """  # noqa
     return delete_user(current_user, id)
 
 
 @bp.route('/users/list/<product_id>', methods=['GET'])
 @token_required
-def get_product(current_user, product_id):
-    try:
-        exists_product = Product.query.filter(product_id == product_id).first()
+def fetch_product(current_user, product_id):
+    """
+    @api {get} /users/list/:product_id
+    Add Product
+    @apiName get_product
+    @apiGroup Product
 
-        if not exists_product:
-            product = get_product_by_id(product_id)
+    @apiHeader {String} x-access Authorization Token
 
-            if product:
-                p = Product()
-                p.from_dict(product)
-                p.product_id=product_id
-                current_user.products.append(p)
-                db.session.commit()
-                return jsonify(
-                    {
-                        'message': 'product added in list'
-                    }
-                ), HTTPStatus.OK
+    @apiParam {Number} product_id Product ID
 
-        if exists_product in current_user.products:
-            return jsonify({'message': 'product added in list'}), HTTPStatus.OK
 
-        current_user.products.append(exists_product)
-        db.session.commit()
-        return jsonify({'message': 'product added in list'}), HTTPStatus.OK
-    except Exception as exc:
-        raise exc
+    @apiExample Request
+        HTTP/1.1 200 OK
+        curl --location --request GET 'http://localhost:5000/api/users/list/1bf0f365-fbdd-4e21-9786-da459d78dd1f' \
+            --header 'x-access-tokens: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImJlbGEiLCJleHAiOjE2MDkwMTk2OTl9.7wRC4JB0n_0-bYAAIF8Fny4f-c33q8sf0hgvmUL8h38'
+
+    @apiSuccess {Object} oret Product fetched
+        HTTP/1.1 200 Ok
+    
+    @apiSuccessExample {json} Product
+        HTTP/1.1 200 OK
+        {
+            "message": "product added in list"
+        }
+    @apiError 401 User not found || token missing
+    @apiError 404 Product not found
+    """  # noqa
+    return get_product(current_user, product_id)
 
 
 @bp.route('/users/list/<product_id>', methods=['DELETE'])
@@ -321,7 +310,7 @@ def purge_product(current_user, product_id):
     @api {delete} /users/list/:product_id
     Remove Product
     @apiName remove_product
-    @apiGroup User
+    @apiGroup Product
 
     @apiHeader {String} x-access Authorization Token
 
@@ -336,36 +325,10 @@ def purge_product(current_user, product_id):
 
     @apiSuccessExample {json} Product removed
         {
-            "message": "successfully deleted"
+            "message": "product removed from list"
         }
 
-    @apiError 404 User not found
-    @apiError 401 Token missing || missing admin permission
-    """
-    try:
-        print('started here')
-        product = Product.query.filter(
-            Product.user.has(id=current_user.id),
-            product_id == product_id).first()
-        print('product: ', product)
-        if product:
-            current_user.products.remove(product)
-            db.session.commit()
-            return jsonify(
-                {
-                    'message': 'product removed from list'
-                }
-            ), HTTPStatus.ACCEPTED
-
-        return jsonify(
-            {
-                'message': 'product not found in list'
-            }
-        ), HTTPStatus.NOT_FOUND
-
-    except Exception:
-        return jsonify(
-            {
-                'message': 'An error as ocurred'
-            }
-        ), HTTPStatus.INTERNAL_SERVER_ERROR
+    @apiError 404 Product not found in User List
+    @apiError 401 Token missing
+    """  # noqa
+    return remove_product(current_user, product_id)

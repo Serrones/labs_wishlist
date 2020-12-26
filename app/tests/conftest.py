@@ -22,3 +22,23 @@ def app():
     yield app
     db.session.remove()
     db.drop_all()
+
+
+@pytest.fixture
+def user_payload():
+    return {
+        'username': 'fake_user',
+        'email': 'fake@email.com',
+        'is_admin': True,
+        'password': 'fake-pass'
+    }
+
+
+@pytest.fixture
+def user_payload_2():
+    return {
+        'username': 'fake_user_2',
+        'email': 'fake_user_2@email.com',
+        'is_admin': False,
+        'password': 'fake-pass'
+    }
