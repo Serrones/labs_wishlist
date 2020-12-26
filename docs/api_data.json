@@ -4,7 +4,7 @@
     "url": "/auth",
     "title": "Return Token",
     "name": "authentication",
-    "group": "User",
+    "group": "Auth",
     "success": {
       "fields": {
         "Success 200": [
@@ -66,8 +66,170 @@
       }
     },
     "version": "0.0.0",
-    "filename": "app/api/users.py",
-    "groupTitle": "User"
+    "filename": "app/api/routes.py",
+    "groupTitle": "Auth"
+  },
+  {
+    "type": "get",
+    "url": "/users/list/:product_id",
+    "title": "Add Product",
+    "name": "get_product",
+    "group": "Product",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access",
+            "description": "<p>Authorization Token</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "product_id",
+            "description": "<p>Product ID</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Request",
+        "content": "HTTP/1.1 200 OK\ncurl --location --request GET 'http://localhost:5000/api/users/list/1bf0f365-fbdd-4e21-9786-da459d78dd1f' \\\n    --header 'x-access-tokens: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImJlbGEiLCJleHAiOjE2MDkwMTk2OTl9.7wRC4JB0n_0-bYAAIF8Fny4f-c33q8sf0hgvmUL8h38'",
+        "type": "json"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "oret",
+            "description": "<p>Product fetched HTTP/1.1 200 Ok</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Product",
+          "content": "HTTP/1.1 200 OK\n{\n    \"message\": \"product added in list\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>User not found || token missing</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "404",
+            "description": "<p>Product not found</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "app/api/routes.py",
+    "groupTitle": "Product"
+  },
+  {
+    "type": "delete",
+    "url": "/users/list/:product_id",
+    "title": "Remove Product",
+    "name": "remove_product",
+    "group": "Product",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access",
+            "description": "<p>Authorization Token</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "product_id",
+            "description": "<p>Product ID</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Request",
+        "content": "curl --location --request DELETE 'http://localhost:5000/api/users/list/1bf0f365-fbdd-4e21-9786-da459d78dd1f' \\\n    --header 'x-access-tokens: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InNlcnJvbmVzIiwiZXhwIjoxNjA4OTQ3NDQyfQ.QaVLQmEFiieYRiHTvbnBipBj5r1St2WvAudG_HwqVSU'",
+        "type": "json"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "Product",
+            "description": "<p>removed HTTP/1.1 202</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Product removed",
+          "content": "{\n    \"message\": \"product removed from list\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "404",
+            "description": "<p>Product not found in User List</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>Token missing</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "app/api/routes.py",
+    "groupTitle": "Product"
   },
   {
     "type": "post",
@@ -155,7 +317,7 @@
       }
     },
     "version": "0.0.0",
-    "filename": "app/api/users.py",
+    "filename": "app/api/routes.py",
     "groupTitle": "User"
   },
   {
@@ -236,7 +398,7 @@
       }
     },
     "version": "0.0.0",
-    "filename": "app/api/users.py",
+    "filename": "app/api/routes.py",
     "groupTitle": "User"
   },
   {
@@ -360,7 +522,7 @@
       }
     },
     "version": "0.0.0",
-    "filename": "app/api/users.py",
+    "filename": "app/api/routes.py",
     "groupTitle": "User"
   },
   {
@@ -471,7 +633,7 @@
       }
     },
     "version": "0.0.0",
-    "filename": "app/api/users.py",
+    "filename": "app/api/routes.py",
     "groupTitle": "User"
   },
   {
@@ -588,7 +750,7 @@
       }
     },
     "version": "0.0.0",
-    "filename": "app/api/users.py",
+    "filename": "app/api/routes.py",
     "groupTitle": "User"
   }
 ]

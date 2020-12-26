@@ -4,7 +4,8 @@
     "description": "Labs WishList documentation",
     "title": "Wishlist Docs",
     "order": [
-        "User",
-            "authenticate"
+        "Auth",
+        "Product",
+        "User"
     ]
 }

@@ -4,15 +4,16 @@ define({
   "description": "Labs WishList documentation",
   "title": "Wishlist Docs",
   "order": [
-    "User",
-    "authenticate"
+    "Auth",
+    "Product",
+    "User"
   ],
   "sampleUrl": false,
   "defaultVersion": "0.0.0",
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2020-12-25T21:19:57.431Z",
+    "time": "2020-12-26T21:10:39.605Z",
     "url": "https://apidocjs.com",
     "version": "0.25.0"
   }
