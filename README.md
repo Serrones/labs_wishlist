@@ -81,11 +81,11 @@ make shell
 
 Create an App Container:
 ```
-docker build -t flask-wishlist:latest .
+make docker-flask
 ```
 Running App and Postgres database:
 ```
-docker-compose up
+make docker-compose
 ```
 Upgradind database:
 ```

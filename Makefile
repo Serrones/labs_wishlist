@@ -21,3 +21,9 @@ run:  # First run this command --> export FLASK_APP=labs_wishlist.py
 
 shell:
 	flask shell
+
+docker-flask:
+	docker build -t flask-wishlist:latest .
+
+docker-compose:
+	docker-compose up
