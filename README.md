@@ -22,9 +22,9 @@ Integrating with Flask-SQLAlchemy extension
 
 - Development localhost: [SQLite](https://www.sqlite.org/docs.html)
 
-- Development docker: [Postgres](https://www.postgresql.org/)
-
 - Testing: [SQLite](https://www.sqlite.org/docs.html)
+
+- Docker Environment: [Postgres](https://www.postgresql.org/)
 
 ## Flask Project
 
@@ -45,13 +45,12 @@ pip install -r requirements.txt
 
 ### Running Flask with command line
 
-
 Initializing Flask Project:
 ```
 export FLASK_APP=labs_wishlist.py
 export FLASK_DEBUG=1
 ```
-Creating DataBase:
+Upgradind database:
 ```
 make upgrade
 ```
@@ -78,15 +77,21 @@ Shell with flask project context:
 ```
 make shell
 ```
-## Running Docker
+### Running Docker
 
-Create an App Container
+Create an App Container:
 ```
 docker build -t flask-wishlist:latest .
 ```
-Running app and database postgres
+Running App and Postgres database:
 ```
 docker-compose up
+```
+Upgradind database:
+```
+From another shell window
+    docker exec -i -t <postgres container id> bash
+    flask db upgrade
 ```
 ## Documentation
 
@@ -97,28 +102,27 @@ docs/index.html
 
 ## Authentication and Permissions
 
-Generate token
+Generate token:
 ```
 Authorization Basic Auth
 (username and password)
 ```
-Create User
+Create User:
 ```
 You dont need authentication to create an User
 ```
-Update and Delete User
+Update and Delete User:
 ```
 You need authentication to update and delete an User 
 
 If an User has is_admin true, he has permission to update and delete an User
 ```
-Get User, Get Users, Get Product and Remove Product
+Get User, Get Users, Get Product and Remove Product:
 ```
 You need authentication to get an User or an User list 
 ```
 ### TODO
-- Handling Exceptions
-- Set docker
+- Improve Handling Exceptions
 - Improve logging
 - Improve tests
-- Improve Docs
+- Improve Docker settings
