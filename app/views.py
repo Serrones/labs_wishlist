@@ -77,7 +77,7 @@ def update_user(current_user: User, id: int) -> tuple:
 
     user.from_dict(data)
 
-    if 'passowrd' in data:
+    if 'password' in data:
         user.set_password(data['password'])
 
     db.session.commit()

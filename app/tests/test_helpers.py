@@ -26,4 +26,4 @@ class TestGetUserByUsername:
     ):
         user = get_user_by_username('fake_username')
 
-        assert user == None
+        assert user is None

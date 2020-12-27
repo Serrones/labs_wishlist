@@ -37,7 +37,7 @@ class TestUser:
         }
         user = User()
         user.from_dict(user_dict)
-        
+
         assert user.username == user_dict['username']
         assert user.email == user_dict['email']
         assert user.is_admin == user_dict['is_admin']
