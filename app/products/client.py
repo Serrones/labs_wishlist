@@ -7,6 +7,8 @@ from app.products.exceptions import ProductHttpException
 
 PRODUCTS_URL = 'http://challenge-api.luizalabs.com/api/product'
 
+logging.basicConfig(level=logging.INFO)
+
 
 def get_product_by_id(id: str) -> dict:
     product_url = f'{PRODUCTS_URL}/{id}/'

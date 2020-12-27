@@ -1,8 +1,9 @@
 from http import HTTPStatus
+from unittest import mock
 
 from app.models import User
-from app.views import (create_user, delete_user, get_user, get_users,
-                       update_user)
+from app.views import (create_user, delete_user, get_product, get_user,
+                       get_users, remove_product, update_user)
 
 
 class TestCreateUser:
@@ -182,7 +183,7 @@ class TestUpdateUser:
             message = updated_user[0].json['message']
 
             assert updated_user[1] == HTTPStatus.UNAUTHORIZED
-            assert message == 'you dont have permission'
+            assert message == 'You do not have permission'
 
     def test_update_user_should_return_not_found(
         self,
@@ -303,3 +304,134 @@ class TestDeleteUser:
 
             assert deleted_user[1] == HTTPStatus.NOT_FOUND
             assert message == 'user not found'
+
+
+class TestGetProduct:
+
+    def test_should_put_product_in_user_list(
+        self,
+        app,
+        user_payload,
+        valid_product
+    ):
+        with mock.patch(
+            'app.views.get_product_by_id'
+        ) as mock_get_product:
+            mock_get_product.return_value = valid_product
+
+            with app.test_request_context(
+                '/users', json=user_payload
+            ):
+                create_user()
+
+            with app.test_request_context(
+                '/users/list?product_id=product_id'
+            ):
+                user = User.query.get(1)
+
+                fetch_product = get_product(user, 'product_id')
+
+                message = fetch_product[0].json['message']
+
+                assert fetch_product[1] == HTTPStatus.OK
+                assert message == 'product added in list'
+                assert len(user.products.all()) == 1
+
+    def test_should_have_only_one_product_in_user_list_if_try_put_twice(
+        self,
+        app,
+        user_payload,
+        valid_product
+    ):
+        with mock.patch(
+            'app.views.get_product_by_id'
+        ) as mock_get_product:
+            mock_get_product.return_value = valid_product
+
+            with app.test_request_context(
+                '/users', json=user_payload
+            ):
+                create_user()
+
+            with app.test_request_context(
+                '/users/list?product_id=product_id'
+            ):
+                user = User.query.get(1)
+
+                fetch_product = get_product(user, 'product_id')
+
+                message = fetch_product[0].json['message']
+
+                assert fetch_product[1] == HTTPStatus.OK
+                assert message == 'product added in list'
+                assert len(user.products.all()) == 1
+
+                fetch_product = get_product(user, 'product_id')
+
+                message = fetch_product[0].json['message']
+
+                assert fetch_product[1] == HTTPStatus.OK
+                assert message == 'product already in list'
+                assert len(user.products.all()) == 1
+
+
+class TestRemoveProduct:
+
+    def test_remove_product_should_return_accepted(
+        self,
+        app,
+        user_payload,
+        valid_product
+    ):
+
+        with mock.patch(
+            'app.views.get_product_by_id'
+        ) as mock_get_product:
+            mock_get_product.return_value = valid_product
+
+            with app.test_request_context(
+                '/users', json=user_payload
+            ):
+                create_user()
+
+            with app.test_request_context(
+                '/users/list?product_id=product_id'
+            ):
+                user = User.query.get(1)
+                get_product(user, 'product_id')
+                assert len(user.products.all()) == 1
+
+            with app.test_request_context(
+                '/users/list?product_id=product_id'
+            ):
+                user = User.query.get(1)
+                response = remove_product(user, valid_product['id'])
+
+                message = response[0].json['message']
+
+                assert response[1] == HTTPStatus.ACCEPTED
+                assert message == 'product removed from list'
+                assert len(user.products.all()) == 0
+
+    def test_remove_product_should_return_not_found(
+        self,
+        app,
+        user_payload
+    ):
+
+        with app.test_request_context(
+            '/users', json=user_payload
+        ):
+            create_user()
+
+        with app.test_request_context(
+            '/users/list?product_id=product_id'
+        ):
+            user = User.query.get(1)
+            response = remove_product(user, 'fake_product_id')
+
+            message = response[0].json['message']
+
+            assert response[1] == HTTPStatus.NOT_FOUND
+            assert message == 'product not found in list'
+            assert len(user.products.all()) == 0
