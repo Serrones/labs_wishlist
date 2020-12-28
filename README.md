@@ -34,9 +34,17 @@ git clone https://github.com/Serrones/labs_wishlist
 ```
 ## Install requirements
 
+Python version:
+```
+3.9.0
+```
 Create a virtual environment:
 ```
-virtualenv -p python3 .venv
+python3 -m venv .venv
+```
+Enable virtual environment:
+```
+source .venv/bin/activate
 ```
 Install requiriments with pip:
 ```
@@ -89,8 +97,9 @@ make docker-compose
 ```
 Upgradind database:
 ```
-From another shell window
-    docker exec -i -t <flask container id> bash
+From another shell window:
+    docker ps (To get container id from labs_wishlist_web_1)
+    docker exec -i -t <labs_wishlist_web_1 id> bash
     make upgrade
 ```
 ## Documentation
