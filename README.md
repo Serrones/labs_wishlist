@@ -90,8 +90,8 @@ make docker-compose
 Upgradind database:
 ```
 From another shell window
-    docker exec -i -t <postgres container id> bash
-    flask db upgrade
+    docker exec -i -t <flask container id> bash
+    make upgrade
 ```
 ## Documentation
 
@@ -121,8 +121,3 @@ Get User, Get Users, Get Product and Remove Product:
 ```
 You need authentication to get an User or an User list 
 ```
-### TODO
-- Improve Handling Exceptions
-- Improve logging
-- Improve tests
-- Improve Docker settings

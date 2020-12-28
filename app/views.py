@@ -42,9 +42,7 @@ def create_user() -> tuple:
     user.set_password(data['password'])
     db.session.add(user)
     db.session.commit()
-    logging.info(
-        f'User {user.username} created.'
-    )
+    logging.info('User created.')
     return jsonify(
         {
             'message': 'User created',

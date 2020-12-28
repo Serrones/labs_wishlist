@@ -2,8 +2,6 @@
 [run]
 branch = True
 omit =
-    # omit tests
-    */tests/*
     # omit __init__
     */__init__.py
 
