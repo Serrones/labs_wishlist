@@ -285,8 +285,50 @@ define({ "api": [
             "group": "Success 200",
             "type": "Object",
             "optional": false,
-            "field": "oret",
-            "description": "<p>User created HTTP/1.1 201 Created</p>"
+            "field": "user",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "user.data.email",
+            "description": "<p>User Email</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "user.data.id",
+            "description": "<p>User id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "user.data.username",
+            "description": "<p>User username</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Booelan",
+            "optional": false,
+            "field": "user.data.is_admin",
+            "description": "<p>User admin permission</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "List",
+            "optional": false,
+            "field": "user.data.products",
+            "description": "<p>User products list</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "user.message",
+            "description": "<p>Success Message</p>"
           }
         ]
       },
@@ -433,6 +475,13 @@ define({ "api": [
         ]
       }
     },
+    "examples": [
+      {
+        "title": "Request",
+        "content": "HTTP/1.1 200 OK\ncurl --location --request GET 'http://localhost:5000/api/users/1' \\\n    --header 'x-access-tokens: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImJlbGEiLCJleHAiOjE2MDg5NDcyMzB9.7NizIQC5MohaZZ2kt1PtvWBAa4wQMF8L6MuLk7jrv94'",
+        "type": "json"
+      }
+    ],
     "success": {
       "fields": {
         "Success 200": [
@@ -484,13 +533,6 @@ define({ "api": [
             "optional": false,
             "field": "user.message",
             "description": "<p>Success Message</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Object",
-            "optional": false,
-            "field": "oret",
-            "description": "<p>User fetched HTTP/1.1 200 Ok</p>"
           }
         ]
       },
@@ -502,13 +544,6 @@ define({ "api": [
         }
       ]
     },
-    "examples": [
-      {
-        "title": "Request",
-        "content": "HTTP/1.1 200 OK\ncurl --location --request GET 'http://localhost:5000/api/users/1' \\\n    --header 'x-access-tokens: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImJlbGEiLCJleHAiOjE2MDg5NDcyMzB9.7NizIQC5MohaZZ2kt1PtvWBAa4wQMF8L6MuLk7jrv94'",
-        "type": "json"
-      }
-    ],
     "error": {
       "fields": {
         "Error 4xx": [
@@ -544,6 +579,13 @@ define({ "api": [
         ]
       }
     },
+    "examples": [
+      {
+        "title": "Request",
+        "content": "HTTP/1.1 200 OK\ncurl --location --request GET 'http://localhost:5000/api/users' \\\n    --header 'x-access-tokens: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImJlbGEiLCJleHAiOjE2MDg5NDcyMzB9.7NizIQC5MohaZZ2kt1PtvWBAa4wQMF8L6MuLk7jrv94'",
+        "type": "json"
+      }
+    ],
     "success": {
       "fields": {
         "Success 200": [
@@ -595,13 +637,6 @@ define({ "api": [
             "optional": false,
             "field": "list_users.message",
             "description": "<p>Success Message</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Object",
-            "optional": false,
-            "field": "oret",
-            "description": "<p>Users fetched HTTP/1.1 200 Ok</p>"
           }
         ]
       },
@@ -613,13 +648,6 @@ define({ "api": [
         }
       ]
     },
-    "examples": [
-      {
-        "title": "Request",
-        "content": "HTTP/1.1 200 OK\ncurl --location --request GET 'http://localhost:5000/api/users' \\\n    --header 'x-access-tokens: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImJlbGEiLCJleHAiOjE2MDg5NDcyMzB9.7NizIQC5MohaZZ2kt1PtvWBAa4wQMF8L6MuLk7jrv94'",
-        "type": "json"
-      }
-    ],
     "error": {
       "fields": {
         "Error 4xx": [
@@ -712,8 +740,50 @@ define({ "api": [
             "group": "Success 200",
             "type": "Object",
             "optional": false,
-            "field": "oret",
-            "description": "<p>User updated HTTP/1.1 200 Ok</p>"
+            "field": "user",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "user.data.email",
+            "description": "<p>User Email</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "user.data.id",
+            "description": "<p>User id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "user.data.username",
+            "description": "<p>User username</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Booelan",
+            "optional": false,
+            "field": "user.data.is_admin",
+            "description": "<p>User admin permission</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "List",
+            "optional": false,
+            "field": "user.data.products",
+            "description": "<p>User products list</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "user.message",
+            "description": "<p>Success Message</p>"
           }
         ]
       },

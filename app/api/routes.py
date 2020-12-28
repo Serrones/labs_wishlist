@@ -57,8 +57,13 @@ def post_user():
             "is_admin": false
         }'
 
-    @apiSuccess {Object} oret User created
-        HTTP/1.1 201 Created
+    @apiSuccess {Object} user 
+    @apiSuccess {String} user.data.email User Email
+    @apiSuccess {String} user.data.id User id
+    @apiSuccess {String} user.data.username User username
+    @apiSuccess {Booelan} user.data.is_admin User admin permission
+    @apiSuccess {List} user.data.products User products list
+    @apiSuccess {String} user.message Success Message
 
     @apiSuccessExample {json} User
         HTTP/1.1 201 OK
@@ -107,8 +112,13 @@ def put_user(current_user, id):
             "is_admin": false
         }'
 
-    @apiSuccess {Object} oret User updated
-        HTTP/1.1 200 Ok
+    @apiSuccess {Object} user 
+    @apiSuccess {String} user.data.email User Email
+    @apiSuccess {String} user.data.id User id
+    @apiSuccess {String} user.data.username User username
+    @apiSuccess {Booelan} user.data.is_admin User admin permission
+    @apiSuccess {List} user.data.products User products list
+    @apiSuccess {String} user.message Success Message
     
     @apiSuccessExample {json} User
         HTTP/1.1 200 OK
@@ -142,6 +152,11 @@ def fetch_user(current_user, id):
 
     @apiParam {Number} id_user User ID
 
+    @apiExample Request
+        HTTP/1.1 200 OK
+        curl --location --request GET 'http://localhost:5000/api/users/1' \
+            --header 'x-access-tokens: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImJlbGEiLCJleHAiOjE2MDg5NDcyMzB9.7NizIQC5MohaZZ2kt1PtvWBAa4wQMF8L6MuLk7jrv94'
+
     @apiSuccess {Object} user 
     @apiSuccess {String} user.data.email User Email
     @apiSuccess {String} user.data.id User id
@@ -149,15 +164,6 @@ def fetch_user(current_user, id):
     @apiSuccess {Booelan} user.data.is_admin User admin permission
     @apiSuccess {List} user.data.products User products list
     @apiSuccess {String} user.message Success Message
-
-
-    @apiExample Request
-        HTTP/1.1 200 OK
-        curl --location --request GET 'http://localhost:5000/api/users/1' \
-            --header 'x-access-tokens: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImJlbGEiLCJleHAiOjE2MDg5NDcyMzB9.7NizIQC5MohaZZ2kt1PtvWBAa4wQMF8L6MuLk7jrv94'
-
-    @apiSuccess {Object} oret User fetched
-        HTTP/1.1 200 Ok
     
     @apiSuccessExample {json} User
         HTTP/1.1 200 OK
@@ -187,6 +193,11 @@ def fetch_users(current_user):
 
     @apiHeader {String} x-access Authorization Token
 
+    @apiExample Request
+        HTTP/1.1 200 OK
+        curl --location --request GET 'http://localhost:5000/api/users' \
+            --header 'x-access-tokens: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImJlbGEiLCJleHAiOjE2MDg5NDcyMzB9.7NizIQC5MohaZZ2kt1PtvWBAa4wQMF8L6MuLk7jrv94'
+    
     @apiSuccess {Object[]} list_users
     @apiSuccess {String} list_users.users.data.email User Email
     @apiSuccess {String} list_users.users.data.id User id
@@ -195,15 +206,6 @@ def fetch_users(current_user):
     @apiSuccess {List} list_users.users.data.products User products list
     @apiSuccess {String} list_users.message Success Message
 
-
-    @apiExample Request
-        HTTP/1.1 200 OK
-        curl --location --request GET 'http://localhost:5000/api/users' \
-            --header 'x-access-tokens: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImJlbGEiLCJleHAiOjE2MDg5NDcyMzB9.7NizIQC5MohaZZ2kt1PtvWBAa4wQMF8L6MuLk7jrv94'
-    
-    @apiSuccess {Object} oret Users fetched
-        HTTP/1.1 200 Ok
-    
     @apiSuccessExample {json} Users
         HTTP/1.1 200 OK
         {
