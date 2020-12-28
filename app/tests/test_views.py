@@ -10,8 +10,8 @@ class TestCreateUser:
 
     def test_create_user_should_return_created(
         self,
-        user_payload,
-        app
+        app,
+        user_payload
     ):
         with app.test_request_context(
             '/users', json=user_payload
@@ -27,8 +27,8 @@ class TestCreateUser:
 
     def test_create_user_should_return_bad_request_when_missing_field(
         self,
-        user_payload,
-        app
+        app,
+        user_payload
     ):
         del user_payload['username']
         with app.test_request_context(
@@ -43,10 +43,9 @@ class TestCreateUser:
 
     def test_create_user_should_return_forbidden_when_user_already_created(
         self,
-        user_payload,
-        app
+        app,
+        user_payload
     ):
-
         with app.test_request_context(
             '/users', json=user_payload
         ):
@@ -80,11 +79,7 @@ class TestGetUsers:
             assert users[1] == HTTPStatus.OK
             assert message == 'success'
 
-    def test_get_users_should_return_success_even_not_users(
-        self,
-        app
-    ):
-
+    def test_get_users_should_return_success_even_not_users(self, app):
         with app.test_request_context('/users'):
             users = get_users()
 
@@ -101,7 +96,6 @@ class TestGetUser:
         app,
         user_payload
     ):
-
         with app.test_request_context(
             '/users', json=user_payload
         ):
@@ -117,11 +111,7 @@ class TestGetUser:
             assert message == 'successfully fetched'
             assert username == user_payload['username']
 
-    def test_get_user_should_return_not_found(
-        self,
-        app
-    ):
-
+    def test_get_user_should_return_not_found(self, app):
         with app.test_request_context('/users?id=id'):
             user = get_user(1)
 
@@ -138,7 +128,6 @@ class TestUpdateUser:
         app,
         user_payload
     ):
-
         with app.test_request_context(
             '/users', json=user_payload
         ):
@@ -241,7 +230,6 @@ class TestDeleteUser:
         user_payload,
         user_payload_2
     ):
-
         with app.test_request_context(
             '/users', json=user_payload
         ):
@@ -383,7 +371,6 @@ class TestRemoveProduct:
         user_payload,
         valid_product
     ):
-
         with mock.patch(
             'app.views.get_product_by_id'
         ) as mock_get_product:
@@ -418,7 +405,6 @@ class TestRemoveProduct:
         app,
         user_payload
     ):
-
         with app.test_request_context(
             '/users', json=user_payload
         ):
